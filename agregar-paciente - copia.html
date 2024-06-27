@@ -1,0 +1,85 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agregar Paciente</title>
+    <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
+    <link rel="stylesheet" href="estilo_fondo.css">
+</head>
+<body>
+    <div class="container">
+        <div class="medium-6 large-5 columns">
+            <h2>Agregar Paciente</h2>
+            <form id="pacienteForm">
+                <label>Nombre
+                    <input type="text" name="nombre" required>
+                </label>
+                <label>Fecha de Nacimiento
+                    <input type="date" name="fecha_nacimiento" required>
+                </label>
+                <label>Edad
+                    <input type="number" name="edad" required>
+                </label>
+                <label>Grupo Sanguíneo
+                    <input type="text" name="grupo_sanguineo" required>
+                </label>
+                <label>Alergias a Medicamentos
+                    <textarea name="alergico_medicamento"></textarea>
+                </label>
+                <label>Diagnóstico Médico
+                    <textarea name="diagnostico_medico" required></textarea>
+                </label>
+                <label>Tratamiento
+                    <textarea name="tratamiento" required></textarea>
+                </label>
+                <label>Médico Responsable
+                    <input type="text" name="medico_responsable" required>
+                </label>
+                <label>Número de Seguro Social
+                    <input type="text" name="numero_seguro_social" required>
+                </label>
+                <label>Nombre del Familiar
+                    <input type="text" name="familiar_nombre" required>
+                </label>
+                <label>Teléfono del Familiar
+                    <input type="text" name="familiar_telefono" required>
+                </label>
+                <div class="button-group">
+                    <button type="button" class="button" onclick="agregarPaciente()">Agregar Paciente</button>
+                    <button type="button" class="button alert" onclick="limpiarFormulario()">Limpiar</button>
+                </div>
+            </form>
+            <div id="mensaje"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
+    <script>
+        $(document).foundation();
+
+        function agregarPaciente() {
+            var formData = $("#pacienteForm").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "insertar_paciente.php",
+                data: formData,
+                success: function(response) {
+                    $("#mensaje").html(response);
+                    limpiarFormulario(); // Limpia el formulario después de agregar
+                },
+                error: function(xhr, status, error) {
+                    $("#mensaje").html("Error al agregar paciente: " + xhr.responseText);
+                }
+            });
+        }
+
+        function limpiarFormulario() {
+            document.getElementById("pacienteForm").reset();
+            $("#mensaje").html(""); // Limpia también el mensaje de respuesta
+        }
+    </script>
+</body>
+</html>
